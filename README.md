@@ -1,0 +1,2 @@
+# GoogleSubscribeDemo
+GooglePlay订阅
