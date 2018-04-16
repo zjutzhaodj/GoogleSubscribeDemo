@@ -116,6 +116,10 @@ public class MainActivity extends Activity implements IabBroadcastReceiver.IabBr
     // SKUs for our products: the premium upgrade (non-consumable) and gas (consumable)
     static final String SKU_PREMIUM = "premium";
     static final String SKU_GAS = "gas";
+    static final String SKU_MONTH = "subs001";
+    static final String SKU_YEAR = "subs002";
+    static final String SKU_FREE_TRIAL = "subs003";
+
 
     // SKU for our subscription (infinite gas)
     static final String SKU_INFINITE_GAS_MONTHLY = "infinite_gas_monthly";
@@ -145,32 +149,10 @@ public class MainActivity extends Activity implements IabBroadcastReceiver.IabBr
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
         // load game data
         loadData();
 
-        /* base64EncodedPublicKey should be YOUR APPLICATION'S PUBLIC KEY
-         * (that you got from the Google Play developer console). This is not your
-         * developer public key, it's the *app-specific* public key.
-         *
-         * Instead of just storing the entire literal string here embedded in the
-         * program,  construct the key at runtime from pieces or
-         * use bit manipulation (for example, XOR with some other string) to hide
-         * the actual key.  The key itself is not secret information, but we don't
-         * want to make it easy for an attacker to replace the public key with one
-         * of their own and then fake messages from the server.
-         */
         String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAocfLJEviG1YvIYg1j0Tj15YeQysM/C6N0/heUbicJjXzqKK4DPwZCCv1EY1jJ/SdvHnaToSvpAI9ar9nobxKZ66kvyX8nD3TmjLgxYiGERiSpx7cgcEAvyoLunuttBee6fY/KeIbypaoVIUnF8W4UH+/GOljxiSkrp2wC+WA+Xa2PGNCwcZ0XrQFnhlvI+D8/795C4pvvVlOrvKAzvtE7qG2Znpl3bKAy58bBuGVKP0hXPcXNNmSaaAXZkKbIDxqgdeLyG0jWqsbjyxDcXAGuxOc+IXnmBz4M+7KeRXgVlPPweII1s01YOAgFMKaY+sulONnuDN3wyDH1J2NHiDkkwIDAQAB";
-
-        // Some sanity checks to see if the developer (that's you!) really followed the
-        // instructions to run this sample (don't put these checks on your app!)
-        if (base64EncodedPublicKey.contains("CONSTRUCT_YOUR")) {
-            throw new RuntimeException("Please put your app's public key in MainActivity.java. See README.");
-        }
-        if (getPackageName().startsWith("com.example")) {
-            throw new RuntimeException("Please change the sample's package name! See README.");
-        }
-
         // Create the helper, passing it our context and the public key to verify signatures with
         Log.d(TAG, "Creating IAB helper.");
         mHelper = new IabHelper(this, base64EncodedPublicKey);
@@ -298,34 +280,77 @@ public class MainActivity extends Activity implements IabBroadcastReceiver.IabBr
     public void onBuyGasButtonClicked(View arg0) {
         Log.d(TAG, "Buy gas button clicked.");
 
-        if (mSubscribedToInfiniteGas) {
-            complain("No need! You're subscribed to infinite gas. Isn't that awesome?");
-            return;
-        }
-
-        if (mTank >= TANK_MAX) {
-            complain("Your tank is full. Drive around a bit!");
-            return;
-        }
-
-        // launch the gas purchase UI flow.
-        // We will be notified of completion via mPurchaseFinishedListener
-        setWaitScreen(true);
-        Log.d(TAG, "Launching purchase flow for gas.");
-
-        /* TODO: for security, generate your payload here for verification. See the comments on
-         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
-         *        an empty string, but on a production app you should carefully generate this. */
-        String payload = "";
-
+//        if (mSubscribedToInfiniteGas) {
+//            complain("No need! You're subscribed to infinite gas. Isn't that awesome?");
+//            return;
+//        }
+//
+//        if (mTank >= TANK_MAX) {
+//            complain("Your tank is full. Drive around a bit!");
+//            return;
+//        }
+//
+//        // launch the gas purchase UI flow.
+//        // We will be notified of completion via mPurchaseFinishedListener
+//        setWaitScreen(true);
+//        Log.d(TAG, "Launching purchase flow for gas.");
+//
+//        /* TODO: for security, generate your payload here for verification. See the comments on
+//         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
+//         *        an empty string, but on a production app you should carefully generate this. */
+//        String payload = "";
+//
+//        try {
+//            mHelper.launchPurchaseFlow(this, SKU_GAS, RC_REQUEST,
+//                    mPurchaseFinishedListener, payload);
+//        } catch (IabHelper.IabAsyncInProgressException e) {
+//            complain("Error launching purchase flow. Another async operation in progress.");
+//            setWaitScreen(false);
+//        }
         try {
-            mHelper.launchPurchaseFlow(this, SKU_GAS, RC_REQUEST,
-                    mPurchaseFinishedListener, payload);
+            mHelper.launchPurchaseFlow(this, SKU_MONTH, IabHelper.ITEM_TYPE_SUBS,
+                    null, RC_REQUEST, mPurchaseFinishedListener, "");
         } catch (IabHelper.IabAsyncInProgressException e) {
-            complain("Error launching purchase flow. Another async operation in progress.");
-            setWaitScreen(false);
+            Log.i(TAG,"onBuyGasButtonClicked e"+e);
+            e.printStackTrace();
         }
     }
+
+
+    public void onClickMonthly(View v){
+        Log.i(TAG,"onClickMonthly");
+        try {
+            mHelper.launchPurchaseFlow(this, SKU_MONTH, IabHelper.ITEM_TYPE_SUBS,
+                    null, RC_REQUEST, mPurchaseFinishedListener, "");
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            Log.i(TAG,"onBuyGasButtonClicked e"+e);
+            e.printStackTrace();
+        }
+    }
+
+    public void onClickYearly(View v){
+        Log.i(TAG,"onClickYearly");
+        try {
+            mHelper.launchPurchaseFlow(this, SKU_YEAR, IabHelper.ITEM_TYPE_SUBS,
+                    null, RC_REQUEST, mPurchaseFinishedListener, "");
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            Log.i(TAG,"onBuyGasButtonClicked e"+e);
+            e.printStackTrace();
+        }
+    }
+
+    public void onClickFreeTrail(View v){
+        Log.i(TAG,"onClickFreeTrail");
+        try {
+            mHelper.launchPurchaseFlow(this, SKU_FREE_TRIAL, IabHelper.ITEM_TYPE_SUBS,
+                    null, RC_REQUEST, mPurchaseFinishedListener, "");
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            Log.i(TAG,"onBuyGasButtonClicked e"+e);
+            e.printStackTrace();
+        }
+    }
+
+
 
     // User clicked the "Upgrade to Premium" button.
     public void onUpgradeAppButtonClicked(View arg0) {
@@ -605,7 +630,7 @@ public class MainActivity extends Activity implements IabBroadcastReceiver.IabBr
     // updates UI to reflect model
     public void updateUi() {
         // update the car color to reflect premium status or lack thereof
-        ((ImageView)findViewById(R.id.free_or_premium)).setImageResource(mIsPremium ? R.drawable.premium : R.drawable.free);
+//        ((ImageView)findViewById(R.id.free_or_premium)).setImageResource(mIsPremium ? R.drawable.premium : R.drawable.free);
 
         // "Upgrade" button is only visible if the user is not premium
         findViewById(R.id.upgrade_button).setVisibility(mIsPremium ? View.GONE : View.VISIBLE);

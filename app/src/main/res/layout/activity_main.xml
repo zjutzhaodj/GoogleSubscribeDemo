@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2012 Google Inc. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,82 +16,95 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/screen_wait"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:contentDescription="@string/content_description_app_loading_image"
         android:src="@drawable/wait"
         android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/screen_main"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible">
-        <ImageView
-            android:src="@drawable/title"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:contentDescription="@string/content_description_title_image"
-            android:layout_marginBottom="10dp" />
 
-        <ImageView
-            android:id="@+id/free_or_premium"
+
+        <Button
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:contentDescription="@string/content_desc_free_vs_premium_indicator"
-            android:layout_marginBottom="40dp"
-            android:src="@drawable/free" />
+            android:onClick="onClickMonthly"
+            android:text="Monthly" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickYearly"
+            android:text="YearLy" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickFreeTrail"
+            android:text="7 Day Free Trail" />
+
 
         <ImageView
             android:id="@+id/gas_gauge"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:contentDescription="@string/content_desc_gas_gauge_indicator"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
-            android:src="@drawable/gas4" />
+            android:contentDescription="@string/content_desc_gas_gauge_indicator"
+            android:src="@drawable/gas4"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
-            <ImageView
-                android:src="@drawable/drive"
-                android:onClick="onDriveButtonClicked"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp" />
+            android:visibility="gone">
 
             <ImageView
-                android:src="@drawable/buy_gas"
-                android:onClick="onBuyGasButtonClicked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginRight="20dp"
+                android:onClick="onDriveButtonClicked"
+                android:src="@drawable/drive" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:onClick="onBuyGasButtonClicked"
+                android:src="@drawable/buy_gas" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
+            android:visibility="gone">
+
             <ImageView
                 android:id="@+id/upgrade_button"
-                android:src="@drawable/upgrade_app"
-                android:onClick="onUpgradeAppButtonClicked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:onClick="onUpgradeAppButtonClicked"
+                android:src="@drawable/upgrade_app" />
 
             <ImageView
                 android:id="@+id/infinite_gas_button"
-                android:onClick="onInfiniteGasButtonClicked"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:onClick="onInfiniteGasButtonClicked" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
